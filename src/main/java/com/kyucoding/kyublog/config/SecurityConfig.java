@@ -4,14 +4,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
 
 import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Configuration
-public class SecurityConfig {
+public class SecurityConfig{
 
     @Bean
     BCryptPasswordEncoder passwordEncoder(){
@@ -29,9 +32,10 @@ public class SecurityConfig {
         //3. Form 로그인 설정
         http.formLogin()
                 .loginPage("/loginForm")
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/login") // MyUserDetailsService가 호출됨, Post, x-www-form-urlencoded
                 .successHandler((request, response, authentication) -> {
                     log.debug("디버그 : 로그인 성공");
+                    response.sendRedirect("/");
 
 //                    MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
 //                    HttpSession session = request.getSession();
@@ -41,6 +45,7 @@ public class SecurityConfig {
                 })
                 .failureHandler((request, response, exception) -> {
                     log.debug("디버그 : 로그인 실패 : " +exception.getMessage());
+                    response.sendRedirect("/loginForm");
                 });
 
         //4. 인증, 권한 필터 설정
