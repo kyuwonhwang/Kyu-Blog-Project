@@ -28,30 +28,32 @@
             <ul class="navbar-nav">
                 <c:choose>
                     <c:when test="${sessionUser == null}">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/loginForm">로그인</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/joinForm">회원가입</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/loginForm">로그인</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/joinForm">회원가입</a>
+                        </li>
                     </c:when>
-                <c:otherwise>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/s/board/saveForm">글쓰기</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/user/updateForm">회원정보</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout">로그아웃</a>
-                    </li>
-                </c:otherwise>
+                    <c:otherwise>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/s/board/saveForm">글쓰기</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/updateForm">회원정보</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">로그아웃</a>
+                        </li>
+                    </c:otherwise>
                 </c:choose>
             </ul>
-            <div>
-                <a href="/user/profileUpdate"><img src="/images/profile.jfif" style="width: 35px";
-                                                   class="rounded-circle" alt="Cinque Terre"></a>
-            </div>
+            <c:if test="${sessionUser != null}">
+                <div>
+                    <a href="/user/profileUpdate"><img src="/images/profile.jfif" style="width: 35px";
+                                                       class="rounded-circle" alt="Cinque Terre"></a>
+                </div>
+            </c:if>
         </div>
     </div>
 </nav>

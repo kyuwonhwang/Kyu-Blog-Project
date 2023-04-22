@@ -1,5 +1,6 @@
 package com.kyucoding.kyublog.config;
 
+import com.kyucoding.kyublog.core.auth.MyUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,13 +36,13 @@ public class SecurityConfig{
                 .loginProcessingUrl("/login") // MyUserDetailsService가 호출됨, Post, x-www-form-urlencoded
                 .successHandler((request, response, authentication) -> {
                     log.debug("디버그 : 로그인 성공");
-                    response.sendRedirect("/");
 
-//                    MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
-//                    HttpSession session = request.getSession();
-//                    session.setAttribute("sessionUser", myUserDetails.getUser());
-//
-//                    response.sendRedirect("/");
+                    // View에서 사용하려고 만들어줌
+                    MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+                    HttpSession session = request.getSession();
+                    session.setAttribute("sessionUser", myUserDetails.getUser());
+
+                    response.sendRedirect("/");
                 })
                 .failureHandler((request, response, exception) -> {
                     log.debug("디버그 : 로그인 실패 : " +exception.getMessage());
